@@ -6,16 +6,18 @@
 
 /* --- NEW BRAND & LOGO CSS --- */
 .brand {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 10px;
+    display: block;
+    margin-bottom: 5px;
 }
 .app-logo {
-    max-width: 100%;
-    height: auto;
-    max-height: 80px; 
-    object-fit: contain;
+    width: 100%;
+    height: 140px; /* Sets a fixed height window */
+    object-fit: cover; /* Zooms in to fill the window, cropping out excess vertical white space */
+    object-position: center; /* Ensures the logo stays perfectly in the middle */
     display: block;
+    background-color: white;
+    border-radius: 10px; /* Softens the edges against the dark background */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Adds depth */
 }
 /* ---------------------------- */
 
