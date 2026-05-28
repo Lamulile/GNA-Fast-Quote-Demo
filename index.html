@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GNA Fast Quote - Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span>GNA</span><small>FAST QUOTE</small></div>
+    <nav>
+      <a class="active">▣ Dashboard</a>
+      <a>□ New Quote</a>
+      <a>▤ Quotes</a>
+      <a>◎ Pricing & Credits</a>
+      <a>◌ Profile</a>
+      <a>☷ Terms & Conditions</a>
+      <a>↪ Logout</a>
+    </nav>
+    <div class="help-card"><strong>Prototype</strong><br/>Core demo only<br/><small>Plan extraction + pricing + labour + PDF quote</small></div>
+  </aside>
+
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <h1>GNA Fast Quote - Core Feature Demo</h1>
+        <p>Upload/read plans, extract information, price from Excel data, add labour, and generate a PDF-ready quote.</p>
+      </div>
+      <div class="pill">ZAR pricing • PDF output</div>
+    </header>
+
+    <section class="wizard">
+      <button class="step active" data-step="1"><b>1</b><span>Upload Plan</span></button>
+      <button class="step" data-step="2"><b>2</b><span>Review Extracted Info</span></button>
+      <button class="step" data-step="3"><b>3</b><span>Pricing Engine</span></button>
+      <button class="step" data-step="4"><b>4</b><span>Add Labour Rate</span></button>
+      <button class="step" data-step="5"><b>5</b><span>Generate PDF Quote</span></button>
+    </section>
+
+    <section id="screen-1" class="screen active">
+      <div class="grid two">
+        <div class="card">
+          <h2>Upload Architectural Plan</h2>
+          <p>This demo uses the supplied <b>0. Plan.pdf</b> and its extracted schedule values. You may select a file to show the intended upload interaction.</p>
+          <label class="upload-box">
+            <input id="fileInput" type="file" accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg" />
+            <span class="upload-icon">⇧</span>
+            <strong>Drag/drop or choose a plan file</strong>
+            <small>Prototype supports sample PDF preview and pre-extracted values.</small>
+          </label>
+          <div id="fileStatus" class="notice">Sample loaded: 0. Plan.pdf • 3 pages • A1 drawings</div>
+          <button class="primary" onclick="go(2)">Review Extracted Info →</button>
+        </div>
+        <div class="card plan-card">
+          <h2>Plan Preview</h2>
+          <img src="assets/plan_renders/page_001.png" alt="Rendered plan preview" />
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-2" class="screen">
+      <div class="grid two">
+        <div class="card plan-card wide-preview">
+          <h2>Extracted from Plan</h2>
+          <img src="assets/plan_renders/page_001.png" alt="Rendered plan preview" />
+          <p class="muted">The production version would combine CAD/PDF geometry extraction, schedule reading, and manual confirmation.</p>
+        </div>
+        <div class="card">
+          <h2>Editable Extracted Quantities</h2>
+          <div id="extractedForm" class="form-grid"></div>
+          <h3>Detected Doors & Windows</h3>
+          <div id="scheduleSummary" class="chips"></div>
+          <button class="secondary" onclick="go(1)">← Back</button>
+          <button class="primary" onclick="go(3)">Confirm & Price →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-3" class="screen">
+      <div class="grid two">
+        <div class="card">
+          <h2>Excel-Based Pricing Engine</h2>
+          <p>The prototype imports pricing from the supplied spreadsheet structure: Product Code, Description, Quantity, Unit, Price, Incl VAT.</p>
+          <div class="engine-settings">
+            <label>Mark-up % <input id="markup" type="number" value="15" min="0" step="0.5" /></label>
+            <label>VAT % <input id="vat" type="number" value="15" min="0" step="0.5" /></label>
+            <label>Transport Allowance (R) <input id="transport" type="number" value="5000" min="0" step="100" /></label>
+          </div>
+          <button class="secondary" onclick="go(2)">← Back</button>
+          <button class="primary" onclick="recalculate(); go(4)">Add Labour Rate →</button>
+        </div>
+        <div class="card">
+          <h2>Mapped Material Items</h2>
+          <div class="table-wrap"><table id="materialTable"></table></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-4" class="screen">
+      <div class="grid two">
+        <div class="card">
+          <h2>Contractor Labour Rates</h2>
+          <p>Labour is contractor-controlled and added after material pricing.</p>
+          <div id="labourForm" class="labour-grid"></div>
+          <button class="secondary" onclick="go(3)">← Back</button>
+          <button class="primary" onclick="recalculate(); go(5)">Generate PDF Quote →</button>
+        </div>
+        <div class="card summary-card">
+          <h2>Live Labour Summary</h2>
+          <div id="labourSummary"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-5" class="screen">
+      <div class="grid two">
+        <div class="card">
+          <h2>Quote Summary</h2>
+          <div id="quoteSummary"></div>
+          <div class="notice blue">Generating this quote would deduct <b>1 credit</b> from the contractor account.</div>
+          <button class="secondary" onclick="go(4)">← Back</button>
+          <button class="primary" onclick="printQuote()">Open PDF-Ready Quote</button>
+        </div>
+        <div class="card quote-preview" id="quotePreview"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="printArea"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
